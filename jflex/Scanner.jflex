@@ -37,8 +37,8 @@ import java.lang.StringBuffer;
 }
 \"  { string.setLength(0); yybegin(STRING);/*start to read an string literal*/ }
 "," { return sf.newSymbol("Comma",sym.COMMA); }
-"[" { return sf.newSymbol("Left Square Bracket",sym.LSQBRACKET); }
-"]" { return sf.newSymbol("Right Square Bracket",sym.RSQBRACKET); }
+"[" { return sf.newSymbol("Begin of an array",sym.ARRAY_BEGIN); }
+"]" { return sf.newSymbol("End of an array",sym.ARRAY_END); }
 "-" { return sf.newSymbol("Unary minus",sym.MINUS); }
 0 | [1-9][0-9]* { return sf.newSymbol("An integer literal",sym.DIGITS, yytext()); }
 \.[0-9]+ { return sf.newSymbol("A frac part of a real number",sym.FRAC, yytext()); }

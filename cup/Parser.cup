@@ -10,7 +10,8 @@ parser code {:
 	}
 :}
 
-terminal COMMA, LSQBRACKET, RSQBRACKET;
+terminal COMMA;
+terminal ARRAY_BEGIN, ARRAY_END;
 terminal MINUS;
 terminal String DIGITS, FRAC, EXP;
 terminal String STRING;
@@ -21,7 +22,8 @@ non terminal array, value_list, value;
 non terminal Number number;
 non terminal String int_value;
 
-array ::= LSQBRACKET value_list RSQBRACKET;
+array ::= ARRAY_BEGIN ARRAY_END |
+          ARRAY_BEGIN value_list ARRAY_END;
 value_list ::= value_list COMMA value | value;
 
 value ::= number:e  {: System.out.println(" value: "+e); :} |
