@@ -25,6 +25,15 @@ import java.lang.StringBuffer;
                                        return sf.newSymbol("An string literal",sym.STRING, string.toString()); }
       \\u[0-9a-fA-F]{4}              { string.append((char) Integer.parseInt(yytext().substring(2),16)); }
       \\t                            { string.append('\t'); }
+      \\n                            { string.append('\n'); }
+      \\b                            { string.append('\b'); }
+      \\f                            { string.append('\f'); }
+      \\\\                           { string.append('\\'); }
+      \\\/                           { string.append('/'); }
+      \\r                            { string.append('\r'); }
+      \\\"                           { string.append('\"'); }
+      \\                             { System.err.println("Illegal character: "+yytext()); }
+      .                              { string.append( yytext() ); }
 }
 \"  { string.setLength(0); yybegin(STRING);/*start to read an string literal*/ }
 "," { return sf.newSymbol("Comma",sym.COMMA); }
