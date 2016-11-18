@@ -17,18 +17,21 @@ terminal Double NUMBER;
 terminal String STRING;
 terminal Boolean BOOLEAN;
 terminal NULL;
+terminal OBJ_BEGIN, OBJ_END;
 
 non terminal array, elements, value;
+non terminal object;
 non terminal Number number;
 
 array ::= ARRAY_BEGIN ARRAY_END |
           ARRAY_BEGIN elements ARRAY_END;
 elements ::= elements COMMA value | value;
-
+object ::= OBJ_BEGIN OBJ_END;
 value ::= number:e  {: System.out.println(" value: "+e); :} |
           BOOLEAN:b {: System.out.println(" value: "+b); :} |
           STRING:s  {: System.out.println(" value: "+s); :} |
           array     {: System.out.println(" value: an array"); :} |
+          object    {: System.out.println(" value: an object"); :} |
           NULL:n    {: System.out.println(" value: "+n); :};
 number ::= NUMBER:n {: RESULT=n; :} |
            MINUS NUMBER:n {: RESULT=-n; :};
