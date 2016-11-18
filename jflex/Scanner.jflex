@@ -20,8 +20,9 @@ import java_cup.runtime.SymbolFactory;
 "[" { return sf.newSymbol("Left Square Bracket",sym.LSQBRACKET); }
 "]" { return sf.newSymbol("Right Square Bracket",sym.RSQBRACKET); }
 "-" { return sf.newSymbol("Unary minus",sym.MINUS); }
-\.  { return sf.newSymbol("Decimal separator",sym.DECIMAL_SEPARATOR); }
-[0-9]+ { return sf.newSymbol("Integral Number",sym.NUMBER, new Integer(yytext())); }
+0 | [1-9][0-9]* { return sf.newSymbol("An integer literal",sym.DIGITS, yytext()); }
+\.[0-9]+ { return sf.newSymbol("A frac part of a real number",sym.FRAC, yytext()); }
+[1-9] { return sf.newSymbol("A digit other than zero",sym.DIGIT1_9, new Character(yytext())); }
 "true" { return sf.newSymbol("True boolean value",sym.BOOLEAN, new Boolean(true)); }
 "false" { return sf.newSymbol("False boolean value",sym.BOOLEAN, new Boolean(false)); }
 "null"  { return sf.newSymbol("Null value",sym.NULL, null); }
