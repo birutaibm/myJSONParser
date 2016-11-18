@@ -43,7 +43,6 @@ import java.lang.StringBuffer;
 0 | [1-9][0-9]* { return sf.newSymbol("An integer literal",sym.DIGITS, yytext()); }
 \.[0-9]+ { return sf.newSymbol("A frac part of a real number",sym.FRAC, yytext()); }
 [eE][\+-]?[0-9]+ { return sf.newSymbol("The exponent part of a real number in cientific notation",sym.EXP, yytext()); }
-[1-9] { return sf.newSymbol("A digit other than zero",sym.DIGIT1_9, new Character(yytext())); }
 "true" { return sf.newSymbol("True boolean value",sym.BOOLEAN, new Boolean(true)); }
 "false" { return sf.newSymbol("False boolean value",sym.BOOLEAN, new Boolean(false)); }
 "null"  { return sf.newSymbol("Null value",sym.NULL, null); }

@@ -11,10 +11,9 @@ parser code {:
 :}
 
 terminal COMMA, LSQBRACKET, RSQBRACKET;
-terminal MINUS, DECIMAL_SEPARATOR;
-terminal String DIGITS, DIGIT1_9, FRAC, EXP;
+terminal MINUS;
+terminal String DIGITS, FRAC, EXP;
 terminal String STRING;
-terminal Integer NUMBER;
 terminal Boolean BOOLEAN;
 terminal NULL;
 
