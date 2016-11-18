@@ -1,0 +1,25 @@
+package Example;
+
+import java_cup.runtime.*;
+
+parser code {:
+	public static void main(String args[]) throws Exception {
+		SymbolFactory sf = new DefaultSymbolFactory();
+		if (args.length==0) new Parser(new Scanner(System.in,sf),sf).parse();
+		else new Parser(new Scanner(new java.io.FileInputStream(args[0]),sf),sf).parse();
+	}
+:}
+
+terminal COMMA, LSQBRACKET, RSQBRACKET;
+terminal Integer NUMBER;
+
+non terminal array, value_list, value;
+non terminal Integer expr;
+
+array ::= LSQBRACKET value_list RSQBRACKET;
+value_list ::= value_list COMMA value | value;
+
+value::= expr:e {: System.out.println(" value: "+e+""); :} ;
+expr      ::= NUMBER:n
+	   {: RESULT=n; :}
+	    ;
