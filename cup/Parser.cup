@@ -18,17 +18,18 @@ terminal String STRING;
 terminal Boolean BOOLEAN;
 terminal NULL;
 
-non terminal array, value_list, value;
+non terminal array, elements, value;
 non terminal Number number;
 non terminal String int_value;
 
 array ::= ARRAY_BEGIN ARRAY_END |
-          ARRAY_BEGIN value_list ARRAY_END;
-value_list ::= value_list COMMA value | value;
+          ARRAY_BEGIN elements ARRAY_END;
+elements ::= elements COMMA value | value;
 
 value ::= number:e  {: System.out.println(" value: "+e); :} |
           BOOLEAN:b {: System.out.println(" value: "+b); :} |
           STRING:s  {: System.out.println(" value: "+s); :} |
+          array     {: System.out.println(" value: an array"); :} |
           NULL:n    {: System.out.println(" value: "+n); :};
 number ::= int_value:s {: RESULT=new Integer(s); :} |
            int_value:i EXP:e {: RESULT=new Double(i+e); :} |
