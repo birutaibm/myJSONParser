@@ -12,6 +12,7 @@ parser code {:
 
 terminal COMMA, LSQBRACKET, RSQBRACKET;
 terminal Integer NUMBER;
+terminal Boolean BOOLEAN;
 
 non terminal array, value_list, value;
 non terminal Integer expr;
@@ -19,7 +20,8 @@ non terminal Integer expr;
 array ::= LSQBRACKET value_list RSQBRACKET;
 value_list ::= value_list COMMA value | value;
 
-value::= expr:e {: System.out.println(" value: "+e+""); :} ;
+value ::= expr:e {: System.out.println(" value: "+e); :} |
+          BOOLEAN:b {: System.out.println(" value: "+b); :};
 expr      ::= NUMBER:n
 	   {: RESULT=n; :}
 	    ;
