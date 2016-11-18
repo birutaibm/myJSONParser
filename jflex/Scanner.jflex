@@ -40,9 +40,7 @@ import java.lang.StringBuffer;
 "[" { return sf.newSymbol("Begin of an array",sym.ARRAY_BEGIN); }
 "]" { return sf.newSymbol("End of an array",sym.ARRAY_END); }
 "-" { return sf.newSymbol("Unary minus",sym.MINUS); }
-0 | [1-9][0-9]* { return sf.newSymbol("An integer literal",sym.DIGITS, yytext()); }
-\.[0-9]+ { return sf.newSymbol("A frac part of a real number",sym.FRAC, yytext()); }
-[eE][\+-]?[0-9]+ { return sf.newSymbol("The exponent part of a real number in cientific notation",sym.EXP, yytext()); }
+0 | [1-9][0-9]* (\.[0-9]+)? ([eE][\+-]?[0-9]+)? { return sf.newSymbol("True boolean value",sym.NUMBER, new Double(yytext())); }
 "true" { return sf.newSymbol("True boolean value",sym.BOOLEAN, new Boolean(true)); }
 "false" { return sf.newSymbol("False boolean value",sym.BOOLEAN, new Boolean(false)); }
 "null"  { return sf.newSymbol("Null value",sym.NULL, null); }

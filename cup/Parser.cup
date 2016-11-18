@@ -13,14 +13,13 @@ parser code {:
 terminal COMMA;
 terminal ARRAY_BEGIN, ARRAY_END;
 terminal MINUS;
-terminal String DIGITS, FRAC, EXP;
+terminal Double NUMBER;
 terminal String STRING;
 terminal Boolean BOOLEAN;
 terminal NULL;
 
 non terminal array, elements, value;
 non terminal Number number;
-non terminal String int_value;
 
 array ::= ARRAY_BEGIN ARRAY_END |
           ARRAY_BEGIN elements ARRAY_END;
@@ -31,9 +30,5 @@ value ::= number:e  {: System.out.println(" value: "+e); :} |
           STRING:s  {: System.out.println(" value: "+s); :} |
           array     {: System.out.println(" value: an array"); :} |
           NULL:n    {: System.out.println(" value: "+n); :};
-number ::= int_value:s {: RESULT=new Integer(s); :} |
-           int_value:i EXP:e {: RESULT=new Double(i+e); :} |
-           int_value:i FRAC:f {: RESULT=new Double(i+f); :} |
-           int_value:i FRAC:f EXP:e {: RESULT=new Double(i+f+e); :};
-int_value ::= DIGITS:s {: RESULT=s; :} |
-              MINUS DIGITS:s {: RESULT="-"+s; :};
+number ::= NUMBER:n {: RESULT=n; :} |
+           MINUS NUMBER:n {: RESULT=-n; :};
