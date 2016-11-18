@@ -1,6 +1,7 @@
 package Example;
 
 import java_cup.runtime.SymbolFactory;
+import java.lang.StringBuffer;
 %%
 %cup
 %class Scanner
@@ -8,14 +9,24 @@ import java_cup.runtime.SymbolFactory;
 	public Scanner(java.io.InputStream r, SymbolFactory sf){
 		this(r);
 		this.sf=sf;
+		string = new StringBuffer();
 	}
 	private SymbolFactory sf;
+	private StringBuffer string; //used to buffer characters from string literals
 %}
+%state STRING
 %eofval{
     return sf.newSymbol("EOF",sym.EOF);
 %eofval}
 
 %%
+<STRING> {
+      \"                             { yybegin(YYINITIAL); // end the string literal read and return it
+                                       return sf.newSymbol("An string literal",sym.STRING, string.toString()); }
+      \\u[0-9a-fA-F]{4}              { string.append((char) Integer.parseInt(yytext().substring(2),16)); }
+      \\t                            { string.append('\t'); }
+}
+\"  { string.setLength(0); yybegin(STRING);/*start to read an string literal*/ }
 "," { return sf.newSymbol("Comma",sym.COMMA); }
 "[" { return sf.newSymbol("Left Square Bracket",sym.LSQBRACKET); }
 "]" { return sf.newSymbol("Right Square Bracket",sym.RSQBRACKET); }
