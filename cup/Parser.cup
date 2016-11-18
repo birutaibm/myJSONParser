@@ -11,13 +11,13 @@ parser code {:
 :}
 
 terminal COMMA, LSQBRACKET, RSQBRACKET;
-terminal MINUS;
+terminal MINUS, DECIMAL_SEPARATOR;
 terminal Integer NUMBER;
 terminal Boolean BOOLEAN;
 terminal NULL;
 
 non terminal array, value_list, value;
-non terminal Integer expr;
+non terminal Number expr;
 
 array ::= LSQBRACKET value_list RSQBRACKET;
 value_list ::= value_list COMMA value | value;
@@ -26,4 +26,5 @@ value ::= expr:e    {: System.out.println(" value: "+e); :} |
           BOOLEAN:b {: System.out.println(" value: "+b); :} |
           NULL:n    {: System.out.println(" value: "+n); :};
 expr  ::= MINUS NUMBER:n {: RESULT=-n; :} |
+          NUMBER:i DECIMAL_SEPARATOR NUMBER:f {: RESULT=new Double(i+"."+f); :} |
 	  NUMBER:n {: RESULT=n; :};
