@@ -1,1 +1,1 @@
-[3E-1, 2e+3, 4.2e1, "\u0061", "Love's\tPower", "Love's\nPower", "Love's\/Power", {}, [{}], -5,true,false,null]
+[3E-1, 2e+3, 4.2e1, "\u0061", "Love's\tPower", "Love's\nPower", "Love's\/Power", {"bool1":true,"bool2":false,"bool3":null}, [{}], -5,true,false,null]

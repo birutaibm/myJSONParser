@@ -41,6 +41,7 @@ import java.lang.StringBuffer;
 "]" { return sf.newSymbol("End of an array",sym.ARRAY_END); }
 "{" { return sf.newSymbol("Begin of an object",sym.OBJ_BEGIN); }
 "}" { return sf.newSymbol("End of an object",sym.OBJ_END); }
+":" { return sf.newSymbol("Separator of a key-value pair",sym.PAIR_SEPARATOR); }
 "-" { return sf.newSymbol("Unary minus",sym.MINUS); }
 0 | [1-9][0-9]* (\.[0-9]+)? ([eE][\+-]?[0-9]+)? { return sf.newSymbol("True boolean value",sym.NUMBER, new Double(yytext())); }
 "true" { return sf.newSymbol("True boolean value",sym.BOOLEAN, new Boolean(true)); }
