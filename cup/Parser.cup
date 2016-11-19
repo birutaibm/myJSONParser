@@ -12,36 +12,46 @@ parser code {:
 	}
 :}
 
-terminal COMMA;
-terminal ARRAY_BEGIN, ARRAY_END;
+/* Terminals (tokens returned by the scanner). */
+terminal COMMA; //used to separate elements into an array or pairs into an objects
+terminal ARRAY_BEGIN, ARRAY_END; //array delimiters
 terminal MINUS;
 terminal Double NUMBER;
 terminal String STRING;
 terminal Boolean BOOLEAN;
 terminal NULL;
-terminal OBJ_BEGIN, OBJ_END;
-terminal PAIR_SEPARATOR;
+terminal OBJ_BEGIN, OBJ_END; //object delimiters
+terminal PAIR_SEPARATOR; //used to separate key and value into a pair
 
+/* Non terminals (Needs a grammar especifcation). */
 non terminal ArrayList array, elements;
 non terminal ArrayList object, object_member;
 non terminal SimpleImmutableEntry pair;
 non terminal Object value;
 non terminal Number number;
 
+/* The grammar */
+//any possible value of JSON
 value ::= number:e  {: RESULT=e; :} |
           BOOLEAN:b {: RESULT=b; :} |
           STRING:s  {: RESULT=s; :} |
           array     {: RESULT="an array"; :} |
           object    {: RESULT="an object"; :} |
           NULL:n    {: RESULT=n; :};
+//JSON object value
 object ::= OBJ_BEGIN OBJ_END {: RESULT=new ArrayList(); :} |
            OBJ_BEGIN object_member:m OBJ_END {: RESULT=new ArrayList(); RESULT.addAll(m); :};
+//one or more member of a JSON object
 object_member ::= pair:p {: RESULT=new ArrayList(); RESULT.add(p); :} |
                   pair:p COMMA object_member:m {: RESULT=new ArrayList(); RESULT.add(p); RESULT.addAll(m); :};
+//key-value pair (a single member of a JSON object)
 pair ::= STRING:k PAIR_SEPARATOR value:v {: RESULT=new SimpleImmutableEntry(k,v); :};
+//JSON array value
 array ::= ARRAY_BEGIN ARRAY_END {: RESULT=new ArrayList(); :} |
           ARRAY_BEGIN elements:e ARRAY_END{: RESULT=new ArrayList(); RESULT.addAll(e); :};
+//one or more member of a JSON array
 elements ::= elements:e COMMA value:v {: RESULT=new ArrayList(); RESULT.addAll(e); RESULT.add(v); :} |
              value:v {: RESULT=new ArrayList(); RESULT.add(v); :};
+//JSON number value
 number ::= NUMBER:n {: RESULT=n; :} |
            MINUS NUMBER:n {: RESULT=-n; :};
