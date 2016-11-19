@@ -1,6 +1,8 @@
 package Example;
 
 import java_cup.runtime.*;
+import java.util.ArrayList;
+import java.util.AbstractMap.SimpleImmutableEntry;
 
 parser code {:
 	public static void main(String args[]) throws Exception {
@@ -20,24 +22,26 @@ terminal NULL;
 terminal OBJ_BEGIN, OBJ_END;
 terminal PAIR_SEPARATOR;
 
-non terminal array, elements, value;
-non terminal object;
-non terminal object_member, pair;
+non terminal ArrayList array, elements;
+non terminal ArrayList object, object_member;
+non terminal SimpleImmutableEntry pair;
+non terminal Object value;
 non terminal Number number;
 
-array ::= ARRAY_BEGIN ARRAY_END |
-          ARRAY_BEGIN elements ARRAY_END;
-elements ::= elements COMMA value | value;
-object ::= OBJ_BEGIN OBJ_END |
-           OBJ_BEGIN object_member OBJ_END;
-object_member ::= pair |
-                  pair COMMA object_member;
-pair ::= STRING PAIR_SEPARATOR value;
-value ::= number:e  {: System.out.println(" value: "+e); :} |
-          BOOLEAN:b {: System.out.println(" value: "+b); :} |
-          STRING:s  {: System.out.println(" value: "+s); :} |
-          array     {: System.out.println(" value: an array"); :} |
-          object    {: System.out.println(" value: an object"); :} |
-          NULL:n    {: System.out.println(" value: "+n); :};
+value ::= number:e  {: RESULT=e; :} |
+          BOOLEAN:b {: RESULT=b; :} |
+          STRING:s  {: RESULT=s; :} |
+          array     {: RESULT="an array"; :} |
+          object    {: RESULT="an object"; :} |
+          NULL:n    {: RESULT=n; :};
+object ::= OBJ_BEGIN OBJ_END {: RESULT=new ArrayList(); :} |
+           OBJ_BEGIN object_member:m OBJ_END {: RESULT=new ArrayList(); RESULT.addAll(m); :};
+object_member ::= pair:p {: RESULT=new ArrayList(); RESULT.add(p); :} |
+                  pair:p COMMA object_member:m {: RESULT=new ArrayList(); RESULT.add(p); RESULT.addAll(m); :};
+pair ::= STRING:k PAIR_SEPARATOR value:v {: RESULT=new SimpleImmutableEntry(k,v); :};
+array ::= ARRAY_BEGIN ARRAY_END {: RESULT=new ArrayList(); :} |
+          ARRAY_BEGIN elements:e ARRAY_END{: RESULT=new ArrayList(); RESULT.addAll(e); :};
+elements ::= elements:e COMMA value:v {: RESULT=new ArrayList(); RESULT.addAll(e); RESULT.add(v); :} |
+             value:v {: RESULT=new ArrayList(); RESULT.add(v); :};
 number ::= NUMBER:n {: RESULT=n; :} |
            MINUS NUMBER:n {: RESULT=-n; :};
